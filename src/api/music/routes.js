@@ -19,33 +19,24 @@ const routes = (handler) => [
     },{
         method: 'POST',
         path: '/songs',
-        handler: () => handler.postSongHandler()
+        handler: (req, h) => handler.postSongHandler(req, h)
     },{
         method: 'GET',
         path: '/songs',
-        handler: () => handler.getSongsHandler()
+        handler: (req) => handler.getSongsHandler(req)
     },{
         method: 'GET',
         path: '/songs/{id}',
-        handler: () => handler.getSongByIdHandler()
+        handler: (req, h) => handler.getSongByIdHandler(req, h)
     },{
         method: 'PUT',
         path: '/songs/{id}',
-        handler: () => handler.putSongByIdHandler()
+        handler: (req, h) => handler.putSongByIdHandler(req, h)
     },{
         method: 'DELETE',
         path: '/songs/{id}',
-        handler: () => handler.deleteSongByIdHandler()
+        handler: (req, h) => handler.deleteSongByIdHandler(req, h)
     },
-    // {
-    //     method: 'GET',
-    //     path: '/albums/{albumId}',
-    //     handler: () => handler
-    // },{
-    //     method: 'GET',
-    //     path: '/songs/{search}',
-    //     handler: () => handler
-    // }
 ]
 
 module.exports = routes

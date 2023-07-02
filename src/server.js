@@ -39,12 +39,10 @@ const init = async() => {
           if (!response.isServer) {
             return h.continue;
           }
-          const newResponse = h.response({
+          return h.response({
             status: 'error',
             message: 'terjadi kegagalan pada server kami',
-          });
-          newResponse.code(500);
-          return newResponse;
+          }).code(500);
         }
         return h.continue;
       });

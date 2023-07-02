@@ -3,10 +3,9 @@ exports.up = pgm => {
         id: {
             type: 'VARCHAR(50)',
             primaryKey: true
-        },albums:{
+        },album_id:{
             type: 'VARCHAR(50)',
-            foreignKey: true,
-            notNull: false
+            notNull: false,
         },title: {
             type: 'VARCHAR(50)',
             notNull: true,
