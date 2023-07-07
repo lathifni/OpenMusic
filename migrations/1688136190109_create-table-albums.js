@@ -3,10 +3,12 @@ exports.up = pgm => {
         id:{
             type: 'VARCHAR(50)',
             primaryKey: true
-        },name:{
+        },
+        name:{
             type: 'VARCHAR(50)',
             notNull: true,
-        },year:{
+        },
+        year:{
             type: "INTEGER",
             notNull: true
         }

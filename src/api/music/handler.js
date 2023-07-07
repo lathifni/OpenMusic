@@ -1,5 +1,3 @@
-const ClientError = require("../../exeption/ClientError")
-
 class MusicHandler {
     constructor(service, validator) {
         this._service = service
