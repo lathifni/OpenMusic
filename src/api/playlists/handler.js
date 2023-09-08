@@ -75,9 +75,10 @@ class PlaylistHandler {
         const { id: idPlaylist } = req.params
         const test = await this._playlistsService.checkPlaylistId(idPlaylist)
         if (test == 0){
-            return new NotFoundError('Gagal, id playlist tidak ditemukan')
+            throw new NotFoundError('Gagal, id playlist tidak ditemukan')
         }
         const playlist = await this._playlistsService.getPlaylistByIdAndOwner({ owner: credentialId, idPlaylist })
+        
         const songs = await this._playlistsService.getSongsInPlaylistById(idPlaylist)
         const getSongsInPlaylist = { ...playlist, songs }
 

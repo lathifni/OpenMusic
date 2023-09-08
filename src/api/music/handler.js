@@ -90,6 +90,44 @@ class MusicHandler {
             message: `Berhasil menghapus song `
         }
     }
+
+    async postAlbumLikeByIdHandler(req, h) {
+        const { id: album_id } = req.params
+        const { id: user_id } = req.auth.credentials
+        await this._service.checkAlbumId(album_id)
+        await this._service.checkLiked(album_id, user_id)
+        await this._service.postLikeByAlbumId({ user_id, album_id })
+        return h.response({
+            status  : 'success',
+            message : `Berhasil memberikan like `
+        }).code(201)
+    }
+
+    async getAlbumLikeByIdHandler(req, h) {
+        try {
+            const { id: album_id } = req.params
+            const [likes, cache] = await this._service.getLikeByAlbumId(album_id)
+            // const cache = await this._service.getLikeByAlbumId(album_id)
+            const response = h.response({
+                status  : 'success',
+                data : {likes: likes}
+            }).code(200)
+            if(cache) response.header('X-Data-Source', 'cache')
+            return response
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async deleteAlbumLikeByIdHandler(req, h) {
+        const { id: album_id } = req.params
+        const { id: user_id } = req.auth.credentials
+        await this._service.deleteLikeByAlbumId(album_id, user_id)
+        return h.response({
+            status  : 'success',
+            message : `Berhasil membatalkan like `
+        }).code(200)
+    }
 }
 
 module.exports = MusicHandler

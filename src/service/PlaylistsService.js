@@ -51,6 +51,15 @@ class PlaylistService {
         }
         const res = await this._pool.query(sql)
         if (!res.rows.length) {
+            // const sqll = {
+            //     text: 'SELECT * FROM playlist_songs WHERE id = $1',
+            //     values: [idPlaylist]
+            // }
+            // const ress = await this._pool.query(sqll)
+            // if (!ress.rows.length) {
+            //     // return 0
+            //     throw new NotFoundError('Gagal, id playlist tidak ditemukan')
+            // }
             throw new AutorizationError('Anda tidak punya akses terhadap playlist ini')
         }
         return res.rows[0]
@@ -58,12 +67,13 @@ class PlaylistService {
 
     async checkPlaylistId(idPlaylist){
         const sql = {
-            text: 'SELECT * FROM playlist_songs WHERE id = $1',
+            text: 'SELECT * FROM playlists WHERE id = $1',
             values: [idPlaylist]
         }
         const res = await this._pool.query(sql)
         if (!res.rows.length) {
-            return 0
+            // return 0
+            return 0 && new NotFoundError('Gagal, id playlist tidak ditemukan')
         }
     }
 

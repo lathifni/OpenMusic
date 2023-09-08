@@ -1,5 +1,7 @@
 const Hapi = require('@hapi/hapi')
 const Jwt = require('@hapi/jwt')
+const Inert = require('@hapi/inert');
+const path = require('path');
 require('dotenv').config()
 const ClientError = require('./exeption/ClientError')
 
@@ -24,12 +26,24 @@ const collaborations = require('./api/collab')
 const CollaborationService = require('./service/CollabService')
 const CollaborationValidator = require('./validator/collab')
 
+const _exports = require('./api/exports')
+const ProducerService = require('./service/ProducerService')
+const ExportValidator = require('./validator/exports')
+
+const uploads = require('./api/uploads');
+const StorageService = require('./service/StorageService')
+const UploadsValidator = require('./validator/uploads');
+
+const CacheService = require('./service/CacheService')
+
 const init = async () => {
-  const musicService = new MusicService()
+  const cacheService = new CacheService();
+  const musicService = new MusicService(cacheService)
   const usersService = new UsersService()
   const authenticationsService = new AuthenticationsService()
   const playlistService = new PlaylistService()
   const collaborationService = new CollaborationService()
+  const storageService = new StorageService(path.resolve(__dirname, 'api/uploads/file/name'))
   
   const server = Hapi.server({
     port: process.env.PORT,
@@ -44,6 +58,8 @@ const init = async () => {
   await server.register([
     {
       plugin: Jwt
+    }, {
+      plugin: Inert
     }
   ])
 
@@ -97,6 +113,19 @@ const init = async () => {
         service: collaborationService,
         validator: CollaborationValidator
       }
+    }, {
+      plugin: _exports,
+      options: {
+        service: ProducerService,
+        playlistService: playlistService,
+        validator: ExportValidator
+      }
+    }, {
+      plugin: uploads,
+      options: {
+        service: storageService,
+        validator: UploadsValidator,
+      },
     },
   ])
 
